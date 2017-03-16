@@ -4,7 +4,7 @@ $FOR_REG_NUM = '-?\d+\.?\d*';
 $FOR_REG_ONE_OP = '\^';
 $FOR_REG_TWO_OP = '(\*|\/)';
 $FOR_REG_THREE_OP = '(\+|-)';
-$REG_BRACKETS = '/\(\)/';
+$REG_BRACKETS = '/\(.*\)/';
 
 function math($mat, $OP){
     global $FOR_REG_NUM;
@@ -30,10 +30,18 @@ function math($mat, $OP){
 
 function findBrackets($req){
     global $REG_BRACKETS;
+    $count = 0;
     $req = preg_replace_callback($REG_BRACKETS, function($mat){
-      return "LOL";
-    }, $req);
-
+        $req = findOneOp($mat[0]);
+        $req = findTwoOp($req);
+        $req = findThreeOp($req);
+        $req = preg_replace('/\(|\)/', '', $req);
+        return $req;
+    }, $req, -1, $count);
+    if($count === 0){
+        return $req;
+    }
+    $req = findBrackets($req);
     return $req;
 }
 
@@ -45,11 +53,11 @@ function findOneOp($req){
     $req = preg_replace_callback('/'.$FOR_REG_NUM.$FOR_REG_ONE_OP.$FOR_REG_NUM.'/', function($mat){
         global $FOR_REG_ONE_OP;
         return math($mat[0], $FOR_REG_ONE_OP );
-    }, $req, 1, $count);
+    }, $req, -1, $count);
     if($count === 0){
         return $req;
     }
-    $req = findTwoOp($req);
+    $req = findOneOp($req);
     return $req;
 }
 
@@ -60,7 +68,7 @@ function findTwoOp($req){
     $req = preg_replace_callback('/'.$FOR_REG_NUM.$FOR_REG_TWO_OP.$FOR_REG_NUM.'/', function($mat){
         global $FOR_REG_TWO_OP;
         return math($mat[0], $FOR_REG_TWO_OP );
-    }, $req, 1, $count);
+    }, $req, -1, $count);
     if($count === 0){
         return $req;
     }
@@ -75,7 +83,7 @@ function findThreeOp($req){
     $req = preg_replace_callback('/'.$FOR_REG_NUM.$FOR_REG_THREE_OP.$FOR_REG_NUM.'/', function($mat){
         global $FOR_REG_THREE_OP;
         return math($mat[0], $FOR_REG_THREE_OP );
-    }, $req, 1, $count);
+    }, $req, -1, $count);
     if($count === 0){
         return $req;
     }
@@ -90,6 +98,7 @@ if(!empty($req)){
 //        return "LOL";
 //    }, $req, -1, $count);
 
+    $req = findBrackets($req);
     $req = findOneOp($req);
     $req = findTwoOp($req);
     $req = findThreeOp($req);
