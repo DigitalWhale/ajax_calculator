@@ -8,7 +8,7 @@
             console.log(value);
             $.ajax({
                 "type": "POST",
-                "url": "calc.php",
+                "url": "../calc.php",
                 "data": {"math": value},
                 "success": (res) => {
                     for(let i = 0; i < res.length; i++) {
