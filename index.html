@@ -3,13 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>AJAX Calculator</title>
+    <link rel = "stylesheet" href="css/style.css"/>
 </head>
 <body>
-
-<label for="calc">AJAX Calculator:</label>
-    <input type="text" name="calc" id="calc">
-<p>Result:</p>
-<p id = "res"></p>
+<div id="main">
+    <div id="container">
+        <h1>AJAX Calculator:</h1>
+        <label for="calc">Expression</label>
+        <input type="text" name="calc" id="calc">
+        <p id = "res">Result:</p>
+    </div>
+</div>
 <script src="js/jquery-3.1.1.min.js"></script>
 <script src="js/calc.js"></script>
 </body>

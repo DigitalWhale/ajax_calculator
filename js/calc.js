@@ -14,11 +14,11 @@
                     for(let i = 0; i < res.length; i++) {
                         console.log(res + " s");
                     }
-                    $("#res")[0].innerHTML=res;
+                    $("#res")[0].innerHTML="Result: " + res;
                 },
                 "error": (res) => {
                     console.log(res + " e");
-                    $("#res")[0].innerHTML=res;
+                    $("#res")[0].innerHTML="Result: " + res;
                 }
             })
         })
